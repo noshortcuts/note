@@ -1,0 +1,1 @@
+按了ctrl shift + f 开了繁体的模式,按ctrl shift + f 切回简体。

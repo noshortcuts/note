@@ -1,0 +1,1 @@
+#pacman -S audacious mplayer mpd ncmpc gmpc sonata

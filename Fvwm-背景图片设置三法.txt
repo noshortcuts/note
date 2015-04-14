@@ -1,0 +1,12 @@
+法一：
+
+	
+AddToFunc StartFunction I exec exec fvwm-root --dither /home/slack/.fvwm/icons/hui.png
+法二：
+
+	
+AddToFunc StartFunction I Exec exec xloadimage -onroot -fullscreen  /home/virhuiai/.fvwm/icons/hui.png
+法三：
+
+	
+AddToFunc StartFunction I Exec exec xsetroot -bitmap /home/virhuiai/.fvwm/icons/hui.png

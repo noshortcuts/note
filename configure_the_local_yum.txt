@@ -1,0 +1,11 @@
+cd  /etc/yum.repos.d/
+vi CentOs-Base.repo
+
+[iso]
+name=CentOS-$releasever - iso
+baseurl=file:///mnt/centos
+gpkcheck=0
+enabled=1
+
+yum clean all
+

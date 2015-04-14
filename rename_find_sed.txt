@@ -1,0 +1,62 @@
+批量修改文件名(find & rename & sed)
+
+（一） Linux文件名转windows文件名
+
+在Linux下对于文件的命名基本没有多大限制（不能有”/”），但是在windows下，文件名不允许有
+\ / : * ? " < > |，所以如果需要复制文件的时候，在Linux下面命名正确的文件就需要检查命令规则，看是否满足windows的命名规则，主要是检查文件名时候有\ / : * ? " < > |这几个字符，然后将该字符转换为’-’。
+
+ 
+
+这里介绍一个功能比较强大的重命名命令rename：
+
+rename命令的格式：
+rename [ -v ] [ -n ] [ -f ] perlexpr [ files ]
+-v, --verboseVerbose: print names of files successfully renamed.
+-n, --no-actNo Action: show what files would have been renamed.
+-f, --forceForce: overwrite existing files.
+
+简单的rename使用命令：
+字母的替换
+rename "s/AA/aa/" *             //把文件名中的AA替换成aa
+修改文件的后缀
+rename "s/.html/.php/" *     //把.html 后缀的改成 .php后缀
+批量添加文件后缀
+rename "s/$/.txt/" *             //把所有的文件名都以txt结尾
+批量删除文件名
+rename "s/.txt//" *               //把所有以.txt结尾的文件名的.txt删掉
+
+ 
+
+（1）         使用rename命令：由于双引号和”\”在rename命令中会被shell特殊功能扩展，所以暂时还不能替换这两个
+
+find path -type f | xargs rename 's/[:*?<>|]/-/g'
+
+（2）         使用sed命令：由于双引号和”\”在sed命令中会被shell特殊功能扩展，所以暂时还不能替换这两个（注意由于使用sh的时候会创建很多新进程效率较低）
+
+find path -type f |
+
+ sed -n 'h;s#.*/##;s#[:*?<>|]#-#g;ta; a:G;s#^\([^\n]*\)\n\(.*/\)\([^/]*\)$#mv \2\3 \2\1#' | sh –x
+
+ 
+
+（二）批量修改同格式的文件名
+
+如果要修改的文件名的格式一致，可以使用
+
+（1）            find ./ -name xxx -exec mv {} {}.xx \
+
+这个是最简单的了,但是有一点不好的是只能在后面加个后缀
+
+（2）            find ./ -name xxx | xargs -I mv {} {}.xx
+
+（3）            find ./ -name XXX | awk ''{printf("mv %s \t %s \n",$1,$1)}'' | sh
+
+awk 里面可以自由发挥 单纯的对文件名处理来说 还不是awk的强项（注意由于使用sh的时候会创建很多新进程效率较低）
+
+（4）            find ./ -name xxx | sed ''s/XXX/mv xxx xxxxx/'' | sh
+
+（注意由于使用sh的时候会创建很多新进程效率较低）
+
+（5）            ls | sed 's/.old$//'|xargs -I {} mv {}.old {}
+
+创建进程的消耗是很大的,所以能用xargs的时候就不要用 |sh

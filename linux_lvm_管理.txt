@@ -1,0 +1,109 @@
+Linux中的LVM
+
+逻辑卷管理器，通过将另外一个硬盘上的分区加到已有文件系统，来动态地向已有文件系统添加空间的方法。
+
+逻辑卷管理的核心是处理安装在系统上的硬盘分区。在逻辑卷管理的世界里，硬盘称作物理卷（Physical Volume,PV).每个物理卷都会映射到硬盘上创建的某一个物理分区。
+
+多个物理卷元素集中在一起可以组成一个卷组（Volume Group,VG)。逻辑卷管理系统会把卷组当做物理硬盘一样对待，但事实上卷组可能是由分布多个物理硬盘上的多个物理分区组成的。卷组提供了一个创建逻辑分区的平台，而这些逻辑分区事实上包含了文件系统。
+
+整个结构中的最后一层是逻辑卷（Logic Volume,LV)。逻辑卷为Linux提供了创建文件系统的分区环境，作用类似于到目前为止我们一直在探讨的Linux中的物理硬盘。Linux系统将逻辑卷当做物理分区对待。可以使用任意一种标准Linux文件系统来格式化逻辑卷，然后再将它在某个挂载点添加进入Linux虚拟目录中。
+
+1.在硬盘上创建一个LVM分区。使用fdisk或者其它的分区工具来创建一个LVM分区。Linux LVM的分区类型为8e00。
+    #gdisk /dev/sda
+
+2.创建一个物理卷。下述命令将在分区的起始处创建一个卷组描述符：
+　　# pvcreate /dev/hda6 
+　　pvcreate -- -physical volume "/dev/hda6" successfully created
+　　# pvcreate /dev/hda7 
+　　pvcreate- -- physical volume "/dev/hda7" successfully created
+
+3.创建一个卷组。通过下面的方法创建一个新的卷组，并且添加两个物理卷：
+　　# vgcreate lvm /dev/hda6 /dev/hda7 
+　　vgcreate- -- INFO: using default physical extent size 4 MB 
+　　vgcreate- -- INFO: maximum logical volume size is 255.99 Gigabyte
+　　vgcreate- -- doing automatic backup of volume group "lvm"
+　　vgcreate- -- volume group "lvm" successfully created and activated
+
+　　上述命令将创建一个名为lvm，包含有/dev/hda6和/dev/hda7两个物理卷的卷组。使用下面命令来激活卷组：
+
+4.激活卷组
+　　# vgchange -ay lvm
+
+
+5.使用“vgdisplay”命令来查看所建立卷组的细节信息
+　　# vgdisplay 
+　　--- Volume group --- 
+　　VG Name lvm 
+　　VG Access read/write 
+　　VG Status available/resizable 
+　　VG # 0 
+　　MAX LV 256 
+　　Cur LV 1 
+　　Open LV 0 
+　　MAX LV Size 255.99 GB 
+　　Max PV 256 
+　　Cur PV 2 
+　　Act PV 2 
+　　VG Size 3.91 GB 
+　　PE Size 4 MB 
+　　Total PE 1000 
+　　Alloc PE / Size 256 / 1 GB 
+　　Free PE / Size 744 / 2.91 GB 
+　　VG UUID T34zIt-HDPs-uo6r-cBDT-UjEq-EEPB-GF435E 
+
+
+6.创建一个逻辑卷。使用lvcreate命令在卷组中创建一个逻辑卷:
+　　# lvcreate -L2G -nlogvol1 lvm
+
+7.创建文件系统。在该逻辑卷上选择使用ext4日志文件系统:
+　　# mkfs.ext4 /dev/lvm/logvol1
+
+8.使用mount命令来加载新创建的文件系统。
+　　# mount  /dev/lvm/logvol1 /mnt/lv1
+
+9.在/etc/fstab中加入以下入口，在启动时加载文件系统:
+
+　　/dev/lvm/logvol1 /mnt/lv1 reiserfs defaults 1 1
+
+
+10.修改逻辑卷的大小。可以使用lvextend命令方便地修改逻辑卷的大小，增加逻辑卷大小的方法如下：
+　　# lvextend -L+1G /dev/lvm/logvol1
+　　lvextend -- extending logical volume "/dev/lvm/logvol1" to 3GB
+　　lvextend -- doing automatic backup of volume group "lvm"
+　　lvextend -- logical volume "/dev/lvm/logvol1" successfully extended 
+
+　　类似的，减小逻辑卷大小的方法如下：
+
+    # lvreduce -L-1G /dev/lvm/lv1 
+　　lvreduce -- -Warning: reducing active logical volume to 2GB 
+　　lvreduce- -- This may destroy your data (filesystem etc.) 
+　　lvreduce -- -do you really want to reduce "/dev/lvm/lv1"? [y/n]: y 
+　　lvreduce- -- doing automatic backup of volume group "lvm"
+　　lvreduce- -- logical volume "/dev/lvm/lv1" successfully reduced [/CODE]
+
+总结 
+
+　　从上面的讨论可以看到，LVM具有很好的可扩展性，并且使用起来很直观。一旦卷组建立起来以后，根据需求调整每一个逻辑卷的大小也非常容易。
+   
+    LVM操作的相关命令:
+    fdisk -l :查看系统中都认到了那些物理硬盘
+    pvdisplay:查看系统中已经创建好的物理卷
+    pvcreate:创建一个新的物理卷
+    pvremove:删除一个物理卷(也就是从物理卷中删除一个LVM标签)
+    vgdisplay:查看系统中的卷组
+    vgcreate:创建一个新的卷组
+    vgreduce:从卷组中删除一个物理卷(也就是缩小卷组)
+    vgremove:删除一个卷组
+    lvdisplay:查看系统中已经创建好的逻辑卷
+    lvcreate:创建一个新的逻辑卷
+    lvreduce:缩小逻辑卷(也就是从一个逻辑卷中减少一些LE)
+    lvremove:从系统中删除一个逻辑卷
+    mkfs:基于逻辑卷创建一个相应类型的文件系统
+    mkdir -p $mount_piont:创建一个挂载目录
+    创建好的文件系统位于:
+    /dev/$create_vg_name/$lv_name
+    mount /dev/$create_vg_name/$lv_name $mount_piont:挂载文件系统
+
+   vgscan:读取系统中创建的所有卷组
+   vgchange -a y :激活所有卷组  (开机执行,redhat可在/etc/rc.d/rc.sysinit系统启动初始化脚本里可以找到)
+   vgchange -a n :关闭所有卷组(提示:必须在umount所有的文件系统后,才能成功执行

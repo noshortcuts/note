@@ -1,0 +1,14 @@
+data-background="#007777" 设置背景颜色
+data-background="images/backgound.jpg" 设置背景图片
+data-background-repeat="repeat"
+data-background-size="50px"
+<pre><code data-trim contenteditable></code></pre>
+&lt; <
+&gt; >
+
+&ldquo; "
+&rdquo; "
+
+<blockquote> </blockquote>
+
+class="fragment"

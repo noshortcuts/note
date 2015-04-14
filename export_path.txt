@@ -1,0 +1,5 @@
+export PATH=${PATH}:~/bin
+export MANPATH=${MANPATH}:~/man
+export INFOPATH=${INFOPATH}:~/info
+
+#'PATH'与'='不能有空格

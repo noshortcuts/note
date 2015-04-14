@@ -1,0 +1,36 @@
+pacman -S php php-apache apache mariadb php-gd php-mcrypt 
+
+#httpd.conf
+LoadModule php5_module modules/libphp5.so
+
+#LoadModule mpm_event_module modules/mod_mpm_event.so
+LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+
+Include conf/extra/php5_module.conf
+
+DocumentRoot "/srv"
+<Directory "/srv">
+
+ServerAdmin jiejin264@qq.com
+ServerName localhost
+
+
+
+#php.ini
+
+open_basedir = /srv:
+
+extension=gd.so
+extension=mcrypt.so
+
+extension=mysql.so
+extension=mysqli.so
+
+upload_max_filesize=50M
+post_max_size=50M
+
+systemctl enable httpd
+systemctl start httpd
+
+systemctl enable mysql
+systemctl start mysql

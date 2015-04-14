@@ -1,0 +1,2 @@
+sudo rsync -arv --chmod=755 --delete /data/music/ /music/
+

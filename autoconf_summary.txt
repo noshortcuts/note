@@ -1,0 +1,27 @@
+1) Create sources, “Makefile.am”
+	# Makefile.am for epoch.c
+		bin_PROGRAMS=helloword
+		helloword_SOURCES=helloword.c
+2) `autoscan`
+3) Rename “configure.scan” to “configure.ac”
+4) `autoheader`
+5) Add AM_INIT_AUTOMAKE to “configure.ac”
+6) `aclocal`
+	`touch NEWS README AUTHORS ChangeLog`
+7) `automake --add-missing --copy`
+8) `autoconf`
+9) `./configure`
+10) `make`
+11) `make install`
+
+If you modify your source...
+1) Run `autoscan` again
+2) Compare configure.scan with configure.ac
+   Update configure.ac
+3) Run `autoreconf`
+
+
+Makefile.am for toplevel
+
+SUBDIRS = src
+DIST_SUBDIRS = $(SUBDIRS)

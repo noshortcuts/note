@@ -1,0 +1,124 @@
+
+1、分区
+gdisk /dev/sda
+#efi  200M
+#boot 500M
+#root +10G
+#swap +2G
+
+2、格式化
+mkfs.fat -F32 /dev/sda1
+mkfs.ext4 /dev/sda2
+mkswap /dev/sda3
+swapon /dev/sda3
+
+3、挂载分区
+mount /dev/sda3 /mnt
+mkdir -p /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/efi
+
+4、选择镜像站点
+
+vi /etc/pacman.d/mirrorlist
+
+5、安装系统
+
+pacstrap -i /mnt base base-devel
+
+6、生成fstab
+
+genfstab -U -p /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab
+
+7、配置系统
+
+arch-chroot /mnt bash
+
+配置locale，语言
+
+vi /etc/locale.gen en_US.UTF-8 UTF-8
+locale-gen
+
+配置locale.conf
+
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+export LANG=en_US.UTF-8
+
+给计算机起名
+
+echo r17h > /etc/hostname
+
+时区
+ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+配置网络
+systemctl enable dhcpcd.service
+pacman -S dialog wpa_supplicant
+
+设置密码
+passwd
+
+安装GRUB
+pacman -S grub dosfstools efibootmgr
+
+grub-install --target=i386-pc --recheck /dev/sda
+#efi
+grub-install  --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheck
+
+配置grub
+
+pacman -S os-prober
+os-prober
+grub-mkconfig -o /boot/grub/grub.cfg
+
+
+8、卸载mnt，重启
+
+退出chroot
+
+exit
+
+卸载mnt
+
+umount /mnt
+
+reboot
+
+
+9、安装桌面环境
+
+pacman -S xorg xorg-drivers xfce4
+
+安装字体
+
+pacman -S wqy-microhei wqy-zenhei wqy-bitmapfont
+
+cp -R font /usr/share/fonts
+cd /usr/share/fonts
+mkfontscale && mkfontdir && fc-cache
+
+
+9、添加一个用户 把该用户添加到一些组
+pacman -S zsh
+useradd -m -g users -G audio,video,floppy,network,rfkill,scanner,storage,optical,power,wheel,uucp -s /usr/bin/zsh yc1992
+passwd yc1992
+
+pacman -S vim
+ln -s /bin/vim /bin/vi
+
+多媒体
+
+pacman -S mplayer vlc rhythmbox alsa-utils
+
+pacman -S apache php mariadb
+
+pacman -S arch-wiki-docs
+
+pacman -S firefox
+
+pacman -S flashplugin
+
+pacman -S git wget zsh
+
+
+pacman -S ntfs-3g

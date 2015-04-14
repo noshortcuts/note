@@ -1,0 +1,14 @@
+使用命令行创建桌面快捷方式
+
+　　要为特定程序或命令创建桌面快捷方式，你可以使用任意文本编辑器创建一个.desktop文件，然后把它放到/usr/share/applications或者~/.local/share/applications处。一个典型的.desktop文件如下图所示。
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0                                     #version of an app.
+Name[en_US]=yEd                                 #name of an app.
+GenericName=GUI Port Scanner                    #longer name of an app.
+Exec=java -jar /opt/yed-3.11.1/yed.jar          #command used to launch an app.
+Terminal=false                                  #whether an app requires to be run in a terminal
+Icon[en_US]=/opt/yed-3.11.1/icons/yicon32.png   #location of icon file.
+Type=Application                                #type
+Categories=Application;Network;Security;        #categories in which this app should be listed.
+Comment[en_US]=yEd Graph Editor                 #comment which appears as a tooltip

@@ -1,0 +1,6 @@
+ln -s /home/yc1992/my_fonts /usr/share/fonts
+cd /usr/share/fonts/my_fonts
+mkfontscale
+mkfontdir
+fc-cache
+

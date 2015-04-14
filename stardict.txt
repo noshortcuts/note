@@ -1,0 +1,3 @@
+pacman -S stardict
+
+sudo tar -xf /src/stardict.tar.gz -C /usr/share/stardict/dic 

@@ -1,0 +1,329 @@
+
+Pentadactyl/Vimperator：VIM化的Firefox
+
+作者: 善用佳软　　日期: 2012-05-14　　分类: 浏览器, 系统工具　　 标签: Firefox, gvim
+
+VimperatorVimperator 是让 Firefox 拥有模式、纯键盘操作、等 Vim 风格的强大扩展。本文源于tc网友的投稿，此后增加了善用佳软短期的使用笔记等内容。提醒：感兴趣的新用户，可直接选用功能更强大的 Pentadactyl分支 代替 原Vimperator！
+
+    【目录】
+    第一部分：tc网友关于VIMperator的投稿：
+    　　一、入门篇：Hint模式、命令行可视模式
+    　　二、高级篇：;的使用、配置文件、快捷键更改、进一步提高更多资源
+    第二部分：善用佳软的VIMperator使用笔记：
+    　　一、安装　
+    　　二、我使用的Vimperator功能及设置：t打开网址、屏幕缩放、复制相关、Gmail与Greader中屏蔽、几个自定义快捷键、其他
+    　　三、关于Vimperator中默认编辑设定
+    第三部分：最新的Pentadactyl分支
+    第四部分：让更多程序拥有vim风格
+
+Vimperator/Pentadactyl是Mozilla Firefox的一个扩展，它为喜欢使用键盘的用户提供了类似于Vim的用户界面。它和Vim一样，有着较陡的学习曲线。Vimperator最独特的是不需要鼠标, 这是因为它有所谓的Hint模式、带自动补全的命令行，以及帮助系统。
+一、入门篇
+1. Hint模式 (Vimperator hint mode)
+
+Vimperator的hints允许用户实现通常需要鼠标来完成的动作。在此模式中，所有能被点击的网页元素会被编号，用户可以通过输入编号或者链接中的文字来选择。一旦一个元素被选择，就会执行一个操作（如点击、选择、复制链接地址等）。具体执行什么操作由用户如何进入Hint模式决定。
+
+    f(F) hints模式最为重要的一个键可以让你快速打开一个链接.
+    * h,j,k,l 这个熟悉vi的都不用介绍了，导航键
+    * H,L 前进后退键
+    * Ctrl+n 下一个tab
+    * Ctrl+p 上一个tab
+    * Ctrl+6 前后两个tab切换
+    * o url 在当前tab打开url
+    * o 关键字 用浏览器的缺省搜索引擎搜索关键字(用当前tab）
+    * t url 在新tab打开url
+    * t 关键字 用浏览器的缺省搜索引擎搜索关键字（用新tab）
+    * / 在当前页面搜索
+    * d 关闭当前tab
+    * u 重新打开之前关闭的tab
+    * zi 页面放大
+    * zo 页面缩小
+    * zz 恢复页面大小
+
+2. 命令行
+
+Vimperator的大多数功能通过窗口底部类似Vim的命令行来完成。像在Vim中一样，所有的命令以“:”开始。当用户输入 “:”，Vimperator就进入“命令行模式”。常用的命令如下
+
+    :help [主题] – 提供与[主题]相关的帮助
+    :open [地址] – 在当前标签打开[地址]，地址可以是文件、书签的关键字、或者用搜索引擎搜索。
+    :back 和 :forward – 根据历史记录后退和前进。
+    :bmark [地址] – 创建书签。
+    :echo [表达式] – 以JavaScript的形式运算[表达式]并显示结果。
+    :set[!] … – 显示或修改Vimperator和Firefox的设置。
+    :map – 创建、修改键盘快捷键
+
+3. 可视模式
+
+vimperator的可视模式,就是按i进入,然后可以用h k l j 等进行位置的确定.然后可以进行特定段落的复制等操作.
+具体的键盘操作可以参看帮助就是按F1或者在命令行下输入:help　[返回目录]
+二、高级篇
+
+主要着重说明一些用vimperator可能不被注意的功能
+1. ;的使用
+
+(注：2.2版本有一些功能才被加入)
+估计有好多的vimperator选手没有注意到这个键的用法.
+具体的参看说明
+举例;i
+当按下这两个键时,　就相当于查看图片的选项,你可以在页面打开本面的任何一张图.
+进行仔细的查看.
+再一例;;
+此项功能相当于正常模式下的f.即hint模式.可以快速找到需要的链接并打开.
+进行查看
+2.配置文件的使用
+
+vimperator也如vim一样也是可以进行配置的.也有配置文件在在user文件夹下面.名称为_vimperatorrc
+
+下面共享自己的配置.都是在网上找的.郑重感谢原作者
+
+    “surround com and net可以直接先输入网站名,再用<CTRL>+<ENTER>快捷输入.com/.net
+
+    cnoremap<S-Return> <End>.org<Home><C-Right>www.<CR>
+    cnoremap<C-Return> <End>.com<Home><C-Right>www.<CR>
+    “Next Page and Previous Page超级的下一页,基本上是够用了.快捷键是[[和]]
+    set nextpattern=\s*下一页|下一张|下一篇|下页|后页\s*,^\bnext\b,\\bnext\\b,^>$,^(>>|»)$,^(>|»),(>|»)$,\\bmore\\b
+    set previouspattern=\s*上一页|上一张|上一篇|上页|前页\s*,^\bprev|previous\b,\\bprev|previous\\b,^<$,^(<<|«)$,^(<|«),(<|«)$
+    ” 此项功能是自动补全.在命令行下的自动补全.
+    set wop=auto
+    “命令行下拉菜单最多显示的条目数
+
+    set maxitems=6
+    “Look up the word you selected in dict.cn在dict.cn中查找所选词的英语
+    command! dict -nargs=* tabopen http://dict.cn/<args>
+    map w :dict
+    map <silent> W :exe “:dict “+content.getSelection()<CR>
+
+    js <<EOF
+    // Toggle Tool bar
+    liberator.globalVariables[‘sx_gopt’] = ‘T’
+    toggle_bar = function () {
+    toggle_status = liberator.globalVariables[‘sx_gopt’];
+    liberator.globalVariables[‘sx_gopt’] = (toggle_status == ”? ‘T': ”);
+    liberator.execute(‘set guioptions=’ + toggle_status);
+    }
+    // Wiki Selected Text
+    wiki_selected_text = function () {
+    str = buffer.getCurrentWord()
+    liberator.execute(‘tabopen wikipedia ‘ + str);
+    }
+    EOF
+    ” map to js functions F2来显示隐藏工具栏;用<C-W>来在wiki中查看词条.
+
+    map <silent> <F2> :js toggle_bar() <CR>
+    map <C-w> :js wiki_selected_text() <CR>
+
+3. 快捷键的更改问题
+
+对于一些快捷键,你可能觉得并不习惯,也可能觉得并不快捷.在vimperator下面都是可以进行更改的.
+具体的方法如下(以下摘抄自网上,原地址是这里:http://pchu.blogbus.com/logs/32923406.html)
+举例说明:
+比如想要把翻页的的按键用JK来代替，可以如下定义(如果是写在配置文件里面,要把前面的”:”去掉才可以.直接在命令行下生效的话就要加上”:”的.
+:map J <C-d> （回车）
+:map K <C-u> （回车）
+还比如.超级下一页的]]和[[不太好用.因为要按两次。我们可以这样设置
+:map ] ]]
+:map [ [[
+再比如,在 vimperator下面你发现<C-c>和<C-V>是不管用的.那么怎么办呢？我们要如下设定就可以了,因为在vimperator下面.这两个快捷键是有另外用处,所以,可以这样做
+noremap <C-c> <C-v><C-c>
+noremap <C-a> <C-v><C-a>
+cnoremap <C-c> <C-v><C-c>
+cnoremap <C-v> <C-v><C-v>
+cnoremap <C-x> <C-v><C-x>
+inoremap <C-a> <C-v><C-a>
+inoremap <C-c> <C-v><C-c>
+inoremap <C-v> <C-v><C-v>
+inoremap <C-x> <C-v><C-x>
+inoremap <C-z> <C-v><C-z>
+inoremap <C-y> <C-v><C-y>
+这样子,你就会发现就可以正常用<C- c>和<C-V>了.　[返回目录]
+4. 再次提高vimperator的使用方法.
+
+方法1.订阅新闻组
+　　vimperator@mozdev.org 这个是英语的.里面好东西不好,作者经常和用户进行交流,有什么疑问可以到这里提问.
+方法2.观注几个博客　
+　　http://pchu.blogbus.com/ 主要是vimperator脚本的配置问题,很仔细,也很详细
+　　http://luoxiqofy.blogbus.com/ 这里主要是vimperator的脚本使用和配色问题.
+　　里面有几个文章,非常详细地介绍到了怎么把hints从数字替换成汉语拼音的方式.
+5. 附另外的一些资源
+
+vimperator的最新版本在google code上
+
+http://code.google.com/p/vimperator-labs/downloads/list
+
+vimperator也是支持插件的
+
+http://code.google.com/p/vimperator-labs/issues/list
+
+当然也是有主题的
+
+http://code.google.com/p/vimperator-labs/issues/list?can=2&q=label:project-vimperator+label:type-colorscheme
+
+可惜的就是,很久不更新了.基本上都还可以,这一点比较让人高兴.
+vimperator入手不太容易.但是就如vim一样,学习难度都有点大.正所谓好东西.是值得
+为了使用它而投入学习时间的.
+
+vimperator的说明文档如同vim的说明一样,都是详细.同样可惜的是,也都是英语的.
+曾经有人尝试把vimperator的2.0翻译成了汉语.可以参考
+
+http://code.google.com/p/cvimp/
+
+只不过没有最新的2.2
+
+http://code.google.com/p/pinyin-hints-vimperator/
+
+在vimperator这个扩展的hint模式中可以通过拼音首字母过滤中文链接.例如希望打开链接“论坛”，可以在vimperator按f/F进入hint模式，然后输入lt（拼音 l un t an），便会过滤出“论坛”以及其他类似内容。再比如“vimperator修改版”，可以输入xgb或者 vimperatorxgb或者vim空格 xgb（当然，通常你不要输入这么多字母，可能输入xg后链接就打开了）。　[返回目录]
+附1：善用佳软的Vimperator使用笔记
+
+　　说明：我经常访问的网站只有三五个，对浏览器的要求并不高。所以，Vimperator的实际使用时间极短。2007年4月试用过几天，2010年初从Chrome回到Firefox后，又试用过一两周，并记录如下。
+VimperatorVimperator是Firefox的一款扩展，它让Firefox看起来、用起来都象是VIM。你甚至可以说，有了它，Firefox变成了有模式的浏览器，完全可以纯键盘高效操作。
+一、Vimperator安装
+
+　　用Firefox访问这里即可安装。当前（2010-02-18）版本v2.2，适用于Firefox: 3.5 – 3.6.*。
+二、我使用的Vimperator功能及设置
+
+　　有些采用了默认设置，有些进行了个性化定义（c:\Documents and Settings\zyx\_vimperatorrc）。
+t：tabopen 在新标签打开网址
+
+　　自定义如下，以实现键入”,tm”（不包括引号，共3个按键）打开gmail等常用网址。
+
+    noremap <leader>tm :tabopen mail.google.com<CR>
+    noremap <leader>tr :tabopen www.google.com/reader<CR>
+    noremap <leader>tx :tabopen xbeta.info<CR>
+    noremap <leader>te :tabopen xbeta.info/wp-admin<CR>
+
+屏幕缩放
+
+　　+/- 可实现缩放（？Firefox还是Vimperator？）。这也是我的选择。
+　　如果认为 + 需要同时按下shift和=太复杂，可“noremap = +”。
+　　Vimperator默认的zi、zo也可以缩放（zoom in, zoom out）。
+复制相关
+
+　　默认的设定（y: 复制当前页的url到剪贴板。Y：复制选中文字到剪贴板）很不合理，应该交换一下。如下配置竟能生效。
+noremap y Y
+noremap Y y
+在Gmail和Greader中屏蔽Vimperator
+
+　　如下设定用来在gmail和greader中保持pass through模式，即Vimperator不要接管按键，直接传给gmail、greader。其实，也可不做设定，手工用 ctrl-z 进入 pass through 模式。
+autocmd LocationChange .* :js modes.passAllKeys = /mail\.google\.com/.test(buffer.URL) || /google\.com\/reader\//.test(buffer.URL)
+方便折腾与兼顾实用的自定义快捷键
+
+　　修改配置文件后，键入,s即时生效。
+map ,s :so “c:/Documents and Settings/zyx/_vimperatorrc”<CR>
+
+　　在有无菜单、地址栏之间切换：
+　　map <C-Up> :se go=mnT<CR>
+map <C-Down> :se go=n<CR>：
+其他
+
+　　gf：查看页面源代码。
+　　h/l：由于默认左右移动功能很少用到，所以，重新映射为前/后标签页。noremap h gT，noremap l gt。
+
+　　其他功能也会用，但用得不多　[返回目录]。
+三、关于Vimperator的编辑器设定
+
+　　我选用Vimperator，最初只是用来代替It’s All Text扩展。现在的设定是 se editor=”d:/soft/Vim/vim72/gvim.exe -f” 。按下ctrl+i，直接在vim中编辑当前文本框内容。美中不足的是，默认文件名是 .tmp，暂时未找到设定为 .htm的方式。网友提到，可以在 vimperator@mozdev.org\chrome\vimperator.jar 中修改 common\content\editor.js，但我没找到相关设置。
+1. 路径分割符的斜线方向
+
+　　善用佳软（2010-02-17，winxp-sp2, gvim 7.2, VIMperator 2.2）实验结果：用斜线作路径分割符。
+　　windows中标准路径为反斜线：如 d:\soft\Vim\vim72\gvim.exe
+　　但无论 _vimperatorrc 文件，还是临时设定（即直接在Firefox中进入命令行，键入命令），必须把反斜线（\）改为斜线（/）。
+2. 路径中的空格
+
+　　如果路径含空格，必须写为dos 8.3式的短路径，比如 :se editor=”C:/Progra~1/vim/vim72/gvim.exe -f”。（NONAME、hi_lucky 于 2010-02-14）
+　　把反斜杠换成四个反斜杠，空格换成两个反斜杠一个空格……最新版 Vimp测试成功（1wingedangel 于 2010-02-14）
+3. 把gvim.exe目录加入系统路径
+
+　　其实，Vimperator已默认设置为 editor=gvim.exe -f。因此，只要把gvim.exe所在的目录，加入系统变量path即可（或许要重启动）。也可以尝试一下 :se editor=notepad.exe 来间接验证此方法的可行性。
+4. 关于 -f 参数
+
+　　详见vim中 :h -f。这样做就必须打开一个新的gvim.exe，以供Vimperator监控编辑工作是否完成。缺点是启动新gvim速度较慢。而 It’s All Text扩展则是通过监控临时文件来实现更新，可以利用已运行的gvim程序，更优一些。
+5. 关于文件类型
+
+　　我习惯用gvim来发表博客，直接写html源代码。这时，按下ctrl+i后，希望能自动设定ft=html。而Vimperator并无此设置。有网友提到，可以修改源代码，这超出了我的能力范围。后来在vimrc文件中增加了如下语句，默认为html：
+　　au BufRead,BufNewFile vimperator-*.tmp setlocal ft=html
+[返回目录]
+附2: Pentadactyl: Vimperator的替代者
+
+Vimperator是开源软件，因此，大家都可以参与开发和改进，也可以形成新的分支。Pentadactyl 是由 Vimperator 项目最活跃的开发者 kmaglione、dkearns 维护的分支。它针对 Firefox4，利用新的js引擎加速，所以，性能方面比 Vimperator 有了显著改进。按官方的说法，号称启动速度提升了 7 倍。其他改进之处包括：默认隐藏命令行、改进隐私模式 :sanitize 支持、更快速的前后向渐进搜索、用 | 分割多条外部命令。更多改进参见这里。
+
+相关链接：
+
+– Pentadactyl 在 Firefox Add-on 页面
+– 官方网站
+
+从Firefox到Thunderbird及Songbird
+
+另外，Dactyl 项目的目标可不局限于Firefox，而是所有的 Gecko 应用，也包括 Thunderbird 和 Songbird 。Dactyl 项目的总目标是让这些优秀的程序更加高效、舒适。其中，用于 Thunderbird 的 Teledactyl 项目已发布了 alpha 版本。
+
+开发团队称，Dactyl 项目的灵感、动力主要来自 Vim, Links, Lynx, mutt, cmus, Emacs, Conkeror 等可敬的 UNIX 应用，以及它们的开发者、用户，是它们指引着 pentadactyl 的方向。
+
+用户评价：
+
+Vimperator的作者之一Kris Maglione，也是vimperator-labs上面维护plugins最多的人，突然在上面宣布他所有的插件全部移至另外某处host。遂移步前去。看页面最下：Kris Maglione, Doug Kearns, Martin Stubenschrott，其中两个都是Vimperator原版人马。就冲这点，我等Vimperator众就该战栗了。我顿时毫不犹豫装上一试，用最新版的1.0 beta3已经完美运行起来了，而且相比Vimperator真的改进很大。
+
+我今天使用了一天 Pentadactyl 1.0 beta 3。我觉得是，Vimperator老用户5分钟适应的同时，会发现，细节之处改进颇多： 自动补全的速度提高不少；让我爱不释手的全新命令行和状态栏结合体；更多有用的选项等等。
+
+突然发现这个在firefox4里比vimperator要好用。ps：作者很给力。[via 豆瓣小组 fwoncn、 IK]
+
+Pentadactyl与Vimperator之间的选择
+
+从未来发展来看，显然Pentadactyl的发展空间更大。但与目前的扩展兼容性方面，Pentadactyl还有不足。
+– 新用户：如果此前未用过它们，可直接使用Pentadactyl 。用 Firefox4 者尤其推荐。
+– 不再折腾的 Vimperator 用户：无须更换。“那个只针对ff4的，利用新的js引擎进行加速所以很快，而且也支持panorama分组。但是设置需要改动很多并且大部分的扩展都不能用了，另外FF4目前还没有正式发布，我觉得不用赶这个时髦” [via @???]
+– 喜欢折腾的：大胆去试、去比较吧！
+附：让更多程序拥有vim风格
+
+Vim 不仅界定了文本编辑器的高标准，而且开创了键盘操作风：hijk…… 让无数英雄竞折腰！于是产生了如下作品：
+– Muttator：由 Vimperator 作者开发的 Thunderbird Vim 风格扩展。不仅实现了 Vim 风格，还继承了 Linux 下传奇文本邮件客户端 Mutt 的精髓。
+– 在Visual Studio、Eclipse、Netbeans IDE、JetBrains PhpStorm、Chrome 等环境下实现Vim操作：参见 用vim的方式操作你的软件，文中最后还提到了一款通用的ahk脚本 vim-mode，在多数程序中实现vim操作模式。 另可参见 用VIM的方式去浏览互联网。
+– viatc：让强大高效的TC，也拥有Vim的便捷操作。作者是国内网友linxinhong，制作工具也是AutoHotkey。
+附：扩展阅读
+
+　　vimfox.info: Vimperator的中文大本营 推荐!!!
+　　玩酷的vimperator教程
+　　Vimperator —— 用键盘畅游网络
+　　Vimperator 快速指南|官方tutorial.html翻译
+　　使用Vimperator制作超简约风格的Firefox
+附：文章更新历史
+
+　　2012-05-16：补充第4部分 让更多程序拥有vim风格
+　　2010-11-15：补充 Pentadactyl；补充 vimfox.info 。
+　　2010-03-20：收入tc网友的投稿，并作为主文发布；自己的笔记作为附录。
+　　2010-02-23：部分更新。
+　　2010-02-18：从Chrome换回Firefox，受网友鼓动，重新启用更新后的VIMperator。
+　　2007-04-16: 初稿，只是试用，并未实用。>
+24
+您可能也喜欢：
+
+    Firefox笔记：个人记录, 并非教程 (现已转回Chrome)
+    [网友合译] Firefox 3 新功能指南 (v1.54)
+    Firefox 3 指南：高级技巧汇总（v0.2） 
+
+无觅关联推荐[?]
+分享到： QQ空间 新浪微博 腾讯微博 微信 更多 36
+
+    作者: 善用佳软 2012-05-14　
+    出处: http://xbeta.info/vimperator.htm
+    说明：转载、投稿、翻译类文章版权信息以正文标注为准
+    分类: 浏览器, 系统工具　　 标签: Firefox, gvim
+
+热门评论↙
+当前无热门评论
+共有8人喜欢  共161条评论
+登录社区
+留言与交流
+请输入你的评论
+
+发  布
+按时间排序
+123a5899	(游客)	
+pentadactyl官网找半天才看到一个gmail的邮箱，发了邮件一天了，也没回复。不知xbeta能否联系到作者呢？更新ff后，pentadactyl又不支持啦～～关键是官网的nightly build也断更啦～
+回复	踩	顶	
+12月12日 19:02
+amnesiac10	(新浪微博)	
+@123a5899: xpi 是压缩文件，调整里面的兼容版本信息后可以继续使用。
+回复	踩	顶	
+12月13日 18:23
+xhy	(游客)	
+用f 键打开链接总被当成弹出窗口拦截，只能关闭拦截功能吗？
+回复	踩	顶	
+10月20日 19:31

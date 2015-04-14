@@ -1,0 +1,16 @@
+#2014.12.13
+/dev/sda1 share: use for windows and linux file share
+
+/dev/sdb2 media use for store music video picture
+
+/dev/sda3 document use for store document,notes,script write by myself
+
+/dev/sda5 home the home mount point
+
+/dev/sda6 srv it use for storge html
+
+/dev/sda7 /var/log :for mount  reduce the write  ssd
+
+/dev/sdb1 efi boot partition
+
+/dev/sdb2 the system root /
